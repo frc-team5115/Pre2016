@@ -3,11 +3,13 @@ package org.usfirst.frc.team5115.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team5115.robot.commands.AutoCircle;
 import org.usfirst.frc.team5115.robot.commands.StickDrive;
 import org.usfirst.frc.team5115.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5115.robot.subsystems.TalonTest;
@@ -24,8 +26,9 @@ public class Robot extends IterativeRobot {
 	public static Preferences prefs;
 	public static OI oi;
 	public static DriveTrain drivetrain;
-	public StickDrive sd;
 	public static TalonTest talontest;
+	public StickDrive sd;
+	public AutoCircle ac;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -35,8 +38,11 @@ public class Robot extends IterativeRobot {
     	prefs = Preferences.getInstance();
 		oi = new OI();
 		drivetrain = new DriveTrain();
-		sd = new StickDrive();
 		talontest = new TalonTest();
+		sd = new StickDrive();
+		ac = new AutoCircle();
+		
+		SmartDashboard.putData("Turn Command", ac);
     }
 	
 	public void disabledPeriodic() {
@@ -69,6 +75,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	drivetrain.imuToDashboard();
         Scheduler.getInstance().run();
+        
+        Timer.delay(0.02);
     }
     
     /**

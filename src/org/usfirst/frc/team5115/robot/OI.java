@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5115.robot;
 
+import org.usfirst.frc.team5115.robot.commands.AutoCircle;
 import org.usfirst.frc.team5115.robot.commands.TestDrive;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,12 +15,15 @@ public class OI {
 	
     Joystick joy;
     Button tmt;		// testMotorToggler
+    Button nosein;
     
     public OI() {
     	joy = new Joystick(0);
     	tmt = new JoystickButton(joy, 1);
+    	nosein = new JoystickButton(joy, 2);
     	
     	tmt.whenPressed(new TestDrive());
+    	nosein.whenPressed(new AutoCircle());
     }
     
     public double getX() {
