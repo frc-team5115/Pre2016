@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5115.robot.commands.AutoCircle;
+import org.usfirst.frc.team5115.robot.commands.FieldDrive;
 import org.usfirst.frc.team5115.robot.commands.StickDrive;
 import org.usfirst.frc.team5115.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team5115.robot.subsystems.RangeFinder;
 import org.usfirst.frc.team5115.robot.subsystems.TalonTest;
 
 /**
@@ -23,12 +25,17 @@ import org.usfirst.frc.team5115.robot.subsystems.TalonTest;
  */
 public class Robot extends IterativeRobot {
 
-	public static Preferences prefs;
+	public static Preferences prefs;			//subsystems used
 	public static OI oi;
 	public static DriveTrain drivetrain;
 	public static TalonTest talontest;
-	public StickDrive sd;
-	public AutoCircle ac;
+	public static RangeFinder rangefinder;
+	
+	public static StickDrive sd;		// commands
+	public static FieldDrive fd;
+	public static AutoCircle ac;
+	
+	public static boolean fieldOriented = false;	//whether it is driving in field oriented mode
 
     /**
      * This function is run when the robot is first started up and should be
@@ -36,10 +43,12 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	prefs = Preferences.getInstance();
-		oi = new OI();
+		oi = new OI();					//making objects
 		drivetrain = new DriveTrain();
 		talontest = new TalonTest();
+		rangefinder = new RangeFinder();
 		sd = new StickDrive();
+		fd = new FieldDrive();
 		ac = new AutoCircle();
 		
 		SmartDashboard.putData("Turn Command", ac);
@@ -54,13 +63,13 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
-    public void autonomousPeriodic() {
+    public void autonomousPeriodic() {			//nothing here yet cos we don't have autonomous strategies
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
-    	sd.start();
-    	drivetrain.imuStart();
+    	sd.start();					//starts StickDrive
+    	drivetrain.imuStart();		//starts imu
     }
 
     /**
@@ -73,8 +82,9 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	drivetrain.imuToDashboard();
-        Scheduler.getInstance().run();
+    	drivetrain.imuToDashboard();		//displays imu values on dashboard
+    	rangefinder.getRange();				//displays rangefinder value on dashboard
+        Scheduler.getInstance().run();		//runs scheduler
         
         Timer.delay(0.02);
     }

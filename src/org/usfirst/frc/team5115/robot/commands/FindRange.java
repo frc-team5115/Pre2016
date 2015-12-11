@@ -1,22 +1,19 @@
 package org.usfirst.frc.team5115.robot.commands;
 
-import org.usfirst.frc.team5115.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class TestDrive extends Command {
+public class FindRange extends Command {
 
-    public TestDrive() {
+    public FindRange() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.talontest.toggleMotor();	//starts/stops motor
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -25,7 +22,7 @@ public class TestDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;	// immidietely ends
+        return false;
     }
 
     // Called once after isFinished returns true

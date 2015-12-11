@@ -10,19 +10,15 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoCircle extends Command {
 	
-	double startYaw;
+	double startYaw;	// initial direction, not actually used
 
     public AutoCircle() {
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	startYaw = Robot.drivetrain.imu.getYaw();
-    	// time to go in a circle(t): 2pi*radius/speed  translation speed: offset/t
-    	// at 80% power, 10 ft/s   120 in/s  0.785 seconds for a circle
-    	// to offset 12 in. speed = 15.3 in/s  or 10% power
-    	Robot.drivetrain.drive(Robot.prefs.getDouble("TranslateSpeed", -0.3), 0, Robot.prefs.getDouble("TurnSpeed", 0.3));
-    	System.out.println("Started");
+    	startYaw = Robot.drivetrain.imu.getYaw();		//sets startYaw
+    	Robot.drivetrain.drive(Robot.prefs.getDouble("TranslateSpeed", -0.3), 0, Robot.prefs.getDouble("TurnSpeed", 0.3));	//begin driving with smartdashboard values
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -31,19 +27,19 @@ public class AutoCircle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Math.abs(Robot.drivetrain.imu.getYaw()-startYaw)<5);
+        // return (Math.abs(Robot.drivetrain.imu.getYaw()-startYaw)<5);			Something? Meant to stop once the yaw has returned to the initial yaw, but doesn't actually work
+    	return true;		//immidietely run end
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Timer.delay(Robot.prefs.getDouble("TurnTime", 5));
-    	Robot.drivetrain.drive(0, 0, 0);
-    	System.out.println("Over");
+    	Timer.delay(Robot.prefs.getDouble("TurnTime", 5));		//Allow full circle using smartdashboard values
+    	Robot.drivetrain.drive(0, 0, 0);		//stops the chassis
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	System.out.println("Interrupted");
+    	
     }
 }

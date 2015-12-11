@@ -6,8 +6,10 @@ package org.usfirst.frc.team5115.robot;
  * floating around.
  */
 public class RobotMap {
+
+	public static final int rangefinder = 1;
     // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
+    
     // public static int leftMotor = 1;
     // public static int rightMotor = 2;
     
