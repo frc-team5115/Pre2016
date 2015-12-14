@@ -15,7 +15,8 @@ public class GeneralCircle extends Command {
 	double radius;	//nose-in radius
 	double rspeed;	//rotation speed
 	double tspeed;	//translationspeed
-	double kx;		//some constant
+	double kx;
+	double kr;
 	float startAngle;	//the angle that the robot is pointing at at the start
 	boolean canStop = false;	//can the thing stop rotating or not?
 
@@ -29,11 +30,12 @@ public class GeneralCircle extends Command {
 	    	
 	    	rtime = Robot.prefs.getDouble("RotationTime", 10);	//so we can adjust rtime from smart dashboard
 	    	radius = Robot.prefs.getDouble("Radius", 3);		//so we can adjust radius from smart dashboard
+	    	kx = Robot.prefs.getDouble("kx", 1);
+	    	kr = Robot.prefs.getDouble("kr", 1);
 	    	//rspeed = Robot.prefs.getDouble("RotationSpeed", 0.4);
-	    	kx = Robot.prefs.getDouble("kx", 1);				//so we can adjust kx from smart dashboard
 
-	    	startAngle = Robot.drivetrain.imu.getYaw();			//records start angle
-	    	Robot.drivetrain.drive(-(2 * radius * Math.PI / rtime), 0, (360 / rtime));	//sets the motors to begin moving therobot across its path 
+	    	startAngle = Robot.drivetrain.imu.getYaw();		//records start angle
+	    	Robot.drivetrain.drive(-(2 * radius * Math.PI / rtime) * kx, 0, (2 * Math.PI / rtime) * kr);	//sets the motors to begin moving therobot across its path 
 	    	Timer.delay(2);
 	    	canStop = true;										//allows the robot to stop turning
     	}
@@ -47,7 +49,7 @@ public class GeneralCircle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(startAngle - Robot.drivetrain.imu.getYaw()) < 1 && canStop;		//should stop once the robot is within 1 degree of
+        return Math.abs(startAngle + 180 - Robot.drivetrain.imu.getYaw()) < 5 && canStop;		//should stop once the robot is within 1 degree of
     }																					//the target and the robot is allowed to stop, but it doesn't
 
     // Called once after isFinished returns true

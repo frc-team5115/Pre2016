@@ -68,6 +68,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	drivetrain.inuse = false;
     	sd.start();					//starts StickDrive
     	drivetrain.imuStart();		//starts imu
     }
